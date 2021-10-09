@@ -12,6 +12,9 @@ import com.google.android.material.tabs.TabItem
 import com.google.android.material.tabs.TabLayout
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var viewPager:ViewPager
+    private  val fragmentList: ArrayList<Fragment> = arrayListOf()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -23,7 +26,6 @@ class MainActivity : AppCompatActivity() {
         val statusFragment = StatusFragment.newInstance()
 
 
-        val fragmentList: ArrayList<Fragment> = arrayListOf()
         fragmentList.add(cameraFragment)
         fragmentList.add(callListFragment)
         fragmentList.add(chatListFragment)
@@ -35,7 +37,7 @@ class MainActivity : AppCompatActivity() {
         fragmentTitleList.add("STATUS")
         fragmentTitleList.add("CALLS")
 
-        val viewPager = findViewById<ViewPager>(R.id.viewPager)
+        viewPager = findViewById<ViewPager>(R.id.viewPager)
         val tabLayout = findViewById<TabLayout>(R.id.tabLayout)
         val adapter = WhatsAppPagerAdapter(fragmentList, fragmentTitleList, supportFragmentManager)
         viewPager.adapter = adapter
@@ -84,7 +86,23 @@ class MainActivity : AppCompatActivity() {
            }
 
        })
+        //geçiş animasyonu örneği
+        viewPager.setPageTransformer(true,ZoomOutPageTransformer())
 
+        //Default olarak bu indexten başlaması için
+        viewPager.currentItem=1
+
+
+    }
+
+    override fun onBackPressed() {
+
+
+        if (viewPager.currentItem==0){
+            super.onBackPressed()
+        }else{
+            viewPager.currentItem=fragmentList.size-1
+        }
 
     }
 }
