@@ -4,15 +4,18 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.TableLayout
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabItem
 import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var viewPager:ViewPager
+    private lateinit var viewPager:ViewPager2
     private  val fragmentList: ArrayList<Fragment> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,18 +34,43 @@ class MainActivity : AppCompatActivity() {
         fragmentList.add(chatListFragment)
         fragmentList.add(statusFragment)
 
+        val fragmentTitleList:ArrayList<String> = arrayListOf()
+        fragmentTitleList.add("")
+        fragmentTitleList.add("CHATS")
+        fragmentTitleList.add("STATUS")
+        fragmentTitleList.add("CALLS")
 
 
-        viewPager = findViewById<ViewPager>(R.id.viewPager)
+        viewPager = findViewById(R.id.viewPager)
         val tabLayout = findViewById<TabLayout>(R.id.tabLayout)
-        val adapter = WhatsAppPagerAdapter(fragmentList, supportFragmentManager)
+        val adapter = WhatsAppPagerAdapter(fragmentList, this@MainActivity)
         viewPager.adapter = adapter
 
-        tabLayout.setupWithViewPager(viewPager)
+        // tabLayout.setupWithViewPager(viewPager)
+
+        TabLayoutMediator(tabLayout,viewPager){ tab,position->
+            if (position==0){
+                tab.icon=ContextCompat.getDrawable(this,R.drawable.ic_camera)
+            }
+            tab.text=fragmentTitleList[position]
+        }.attach()
+
+        viewPager.registerOnPageChangeCallback(object :ViewPager2.OnPageChangeCallback(){
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
+                super.onPageScrolled(position, positionOffset, positionOffsetPixels)
+            }
+        })
+
+        viewPager.setPageTransformer(ZoomOutPageTransformer())
+
         //buraya kadar normal viewPager implemantasyonu
        //-----
 
-        val tabLayoutCamera=tabLayout.getTabAt(0)
+      /*  val tabLayoutCamera=tabLayout.getTabAt(0)
         tabLayoutCamera?.icon=ContextCompat.getDrawable(this,R.drawable.ic_camera)
 
 
@@ -57,33 +85,37 @@ class MainActivity : AppCompatActivity() {
         val tabLayoutCallList=tabLayout.getTabAt(3)
         tabLayoutCallList?.text="CALLS"
 
+       */
+
 
 
 
         //javadan gördüğümüz ananymous interface kullanımı yapıyoruz
-       viewPager.addOnPageChangeListener(object :ViewPager.OnPageChangeListener{
+     /*  viewPager.addOnPageChangeListener(object :ViewPager.OnPageChangeListener{
            //2 & 3 eğer elle kaydırırsak 2 tıklarsak 3. olarak çalışır
            override fun onPageScrolled(
                position: Int,
                positionOffset: Float,
                positionOffsetPixels: Int
            ) {
-               val title=(viewPager.adapter as WhatsAppPagerAdapter).getPageTitle(position)
-               "OnPageScrolled" showLog "title= $title"
+
            }
            //3 & 2 eğer elle kaydırırsak 3 tıklarsak 2. olarak çalışır
            override fun onPageSelected(position: Int) {
-               "onPageSelected" showLog "title= $title"
+
            }
 
            //1 & 1
            override fun onPageScrollStateChanged(state: Int) {
-               "onPageScrollStateChanged" showLog " state= $state"
+
            }
 
        })
+
+      */
+
         //geçiş animasyonu örneği
-        viewPager.setPageTransformer(true,ZoomOutPageTransformer())
+        //viewPager.setPageTransformer(true,ZoomOutPageTransformer())
 
         //Default olarak bu indexten başlaması için
         viewPager.currentItem=1
