@@ -31,15 +31,11 @@ class MainActivity : AppCompatActivity() {
         fragmentList.add(chatListFragment)
         fragmentList.add(statusFragment)
 
-        val fragmentTitleList: ArrayList<String> = arrayListOf()
-        fragmentTitleList.add("")
-        fragmentTitleList.add("CHATS")
-        fragmentTitleList.add("STATUS")
-        fragmentTitleList.add("CALLS")
+
 
         viewPager = findViewById<ViewPager>(R.id.viewPager)
         val tabLayout = findViewById<TabLayout>(R.id.tabLayout)
-        val adapter = WhatsAppPagerAdapter(fragmentList, fragmentTitleList, supportFragmentManager)
+        val adapter = WhatsAppPagerAdapter(fragmentList, supportFragmentManager)
         viewPager.adapter = adapter
 
         tabLayout.setupWithViewPager(viewPager)

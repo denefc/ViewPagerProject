@@ -5,8 +5,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 
 class WhatsAppPagerAdapter(
-   private val fragmentList:List<Fragment>,
-    private val fragmentTitleList:List<String>
+   private val fragmentList:List<Fragment>
     , fragmentManager: FragmentManager):FragmentPagerAdapter(fragmentManager) {
 
 
@@ -14,7 +13,6 @@ class WhatsAppPagerAdapter(
 
     override fun getCount(): Int =  fragmentList.size
 
-    //viewPager tablayout kullanımı
-    override fun getPageTitle(position: Int): CharSequence? = fragmentTitleList[position]
+
 
 }
