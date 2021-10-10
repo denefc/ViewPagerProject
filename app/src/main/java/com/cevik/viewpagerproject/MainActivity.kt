@@ -118,7 +118,7 @@ class MainActivity : AppCompatActivity() {
         //viewPager.setPageTransformer(true,ZoomOutPageTransformer())
 
         //Default olarak bu indexten başlaması için
-        viewPager.currentItem=1
+        viewPager.currentItem=2
 
 
     }

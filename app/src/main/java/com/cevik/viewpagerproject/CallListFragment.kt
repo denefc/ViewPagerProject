@@ -5,8 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
-
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.cevik.viewpagerproject.data.DataGenerator
 
 
 class CallListFragment : Fragment() {
@@ -17,6 +18,10 @@ class CallListFragment : Fragment() {
         arguments?.let {
 
         }
+
+
+
+
     }
 
     override fun onCreateView(
@@ -24,7 +29,17 @@ class CallListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        return inflater.inflate(R.layout.fragment_call_list, container, false)
+        val rootView=inflater.inflate(R.layout.fragment_call_list, container, false )
+        val rvView=rootView.findViewById<RecyclerView>(R.id.rv)
+        rvView.layoutManager=LinearLayoutManager(rootView.context,RecyclerView.VERTICAL,false)
+
+        val adapter=CallListAdapter()
+        adapter.callList=DataGenerator().generate(10)
+
+        rvView.adapter=adapter
+
+
+        return rootView
     }
 
     companion object {
